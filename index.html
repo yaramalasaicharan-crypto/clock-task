@@ -1,0 +1,103 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" initial-scale="1.0">
+    <title>Fixed Deposit</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(220deg, rgb(37, 249, 18), rgb(68, 68, 230), rgb(32, 217, 246));
+            background-size: 400% 400%;
+            animation: gradientMove 8s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        #tab {
+            padding: 2px;
+            color: aqua;
+            margin-top: 13%;
+        }
+        button {
+            background-color: rgb(206, 157, 12);
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <table align="center" border="2px" id="tab" width="40%" height="50%"> 
+            <form onsubmit="event.preventDefault(); calculator();">
+                <tr>
+                    <th colspan="2" bgcolor="black">Fixed Deposit</th>
+                </tr>
+                <tr>
+                    <th>Amount:</th>
+                    <td>
+                        <input type="range" id="invest" min="1000" max="1000000" step="1000" value="1000000">
+                        <span id="invest-val">1000</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Rate of interest:</th>
+                    <td>
+                        <input type="range" id="interest-rate" min="1" max="18" step="0.1" value="6.7">
+                        <span id="interest-rate-val">6.7%</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tenure:</th>
+                    <td>
+                        <input type="range" id="tenure" min="1" max="10" step="1" value="5">
+                        <span id="tenure-val">5 yrs</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p>Invested amount: <span id="investment-val">--</span></p>
+                        <p>Estimated Return: <span id="estimated-val">--</span></p>
+                        <p>Total Amount: <span id="tot-val">--</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2"><button type="submit">Calculate</button></th>
+                </tr>
+            </form>
+        </table>
+    </div>
+
+    <script>
+        const investmentInput = document.getElementById("invest");
+        const interestRateInput = document.getElementById("interest-rate");
+        const timePeriodInput = document.getElementById("tenure");
+
+        investmentInput.addEventListener("input", function() {
+            document.getElementById("invest-val").innerHTML = `${parseFloat(this.value).toLocaleString('en-IN')}`;
+        });
+
+        interestRateInput.addEventListener("input", function() {
+            document.getElementById("interest-rate-val").innerHTML = `${parseFloat(this.value).toFixed(1)}%`;
+        });
+
+        timePeriodInput.addEventListener("input", function() {
+            document.getElementById("tenure-val").innerHTML = `${this.value} yrs`;
+        });
+
+        function calculator() {
+            const p = parseFloat(investmentInput.value);
+            const r = parseFloat(interestRateInput.value);
+            const t = parseFloat(timePeriodInput.value);
+            const n = 4; 
+
+            const tot = p * Math.pow((1 + (r / 100) / n), n * t);
+            const i = tot - p;
+
+            document.getElementById("investment-val").innerHTML = `${p.toLocaleString('en-IN')}`;
+            document.getElementById("estimated-val").innerHTML = `${Math.round(i).toLocaleString('en-IN')}`;
+            document.getElementById("tot-val").innerHTML = `${Math.round(tot).toLocaleString('en-IN')}`;
+        }
+    </script>
+</body>
+</html>
